@@ -1,278 +1,262 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monitor Antrian Bone Hacker - Purwokerto</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  
+  <style>
+    :root {
+      --bg-main: #f5f5f7;
+      --bg-card: #ffffff;
+      --bg-subtle: #f0f0f2;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --border-color: rgba(0, 0, 0, 0.1);
+      --status-waiting: #ff9500;
+      --status-in-treatment: #007aff;
+      --status-completed: #34c759;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html.dark {
+      --bg-main: #000000;
+      --bg-card: #1c1c1e;
+      --bg-subtle: #2c2c2e;
+      --text-primary: #f5f5f7;
+      --text-secondary: #8e8e93;
+      --border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .tv-layout {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 2rem;
+    }
+
+    /* Column Styles */
+    .column-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      flex-grow: 1;
+      min-height: 0;
+    }
+
+    .column-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Auto-Scroll Logic */
+    .scroll-wrapper {
+      flex-grow: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scroll-content {
+      position: absolute;
+      width: 100%;
+      animation: scroll-up 20s linear infinite;
+    }
+
+    @keyframes scroll-up {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+
+    .patient-row {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Border kontras tebal untuk penanda akhir list saat loop */
+    .border-junction {
+      border-bottom: 8px solid var(--status-waiting) !important;
+    }
+
+    .status-waiting { color: var(--status-waiting); }
+    .status-in-treatment { color: var(--status-in-treatment); }
+    .status-completed { color: var(--status-completed); }
   </style>
 </head>
-<body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="id"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Monitor Antrian Bone Hacker - Purwokerto&lt;/title&gt;</p>
-<p class="p2"><span class="Apple-converted-space">  </span></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="preconnect" href="https://rsms.me/"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="https://rsms.me/inter/inter.css"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">  </span></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg-main: #f5f5f7;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg-card: #ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg-subtle: #f0f0f2;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--text-primary: #1d1d1f;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--text-secondary: #6e6e73;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--border-color: rgba(0, 0, 0, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--status-waiting: #ff9500;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--status-in-treatment: #007aff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--status-completed: #34c759;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>html.dark {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg-main: #000000;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg-card: #1c1c1e;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg-subtle: #2c2c2e;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--text-primary: #f5f5f7;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--text-secondary: #8e8e93;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--border-color: rgba(255, 255, 255, 0.15);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: var(--bg-main);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text-primary);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 100vw;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tv-layout {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* Column Styles */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.column-container {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: repeat(3, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-grow: 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height: 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.column-card {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: var(--bg-card);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border-color);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* Auto-Scroll Logic */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.scroll-wrapper {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-grow: 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.scroll-content {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>animation: scroll-up 20s linear infinite;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>@keyframes scroll-up {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>0% { transform: translateY(0); }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>100% { transform: translateY(-50%); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.patient-row {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 1.25rem 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-bottom: 1px solid var(--bg-subtle);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* Border kontras tebal untuk penanda akhir list saat loop */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.border-junction {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-bottom: 8px solid var(--status-waiting) !important;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.status-waiting { color: var(--status-waiting); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.status-in-treatment { color: var(--status-in-treatment); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.status-completed { color: var(--status-completed); }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body class="dark"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="tv-layout"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="flex justify-between items-end mb-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;h1 class="text-4xl font-bold" style="color: var(--text-primary);"&gt;Monitor Antrian&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="text-xl" style="color: var(--text-secondary);"&gt;Bone Hacker - Cabang Purwokerto&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="text-right"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="date" class="text-xl font-medium mb-1" style="color: var(--text-secondary);"&gt;-&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="clock" class="text-5xl font-mono font-bold text-blue-500"&gt;00:00:00&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;section id="summaryContainer" class="rounded-2xl shadow-sm p-6 mb-6" style="background-color: var(--bg-card); border: 1px solid var(--border-color);"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;main class="column-container"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">      </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="column-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-waiting); color: var(--status-waiting);"&gt;Menunggu&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="scroll-wrapper"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div id="list-waiting" class="scroll-content"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="column-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-in-treatment); color: var(--status-in-treatment);"&gt;Sedang Terapi&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="list-treating" class="overflow-y-auto"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="column-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-completed); color: var(--status-completed);"&gt;Selesai&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="list-completed" class="overflow-y-auto"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer class="mt-6 flex justify-between items-center text-sm" style="color: var(--text-secondary);"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;Sinkronisasi otomatis aktif&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;Terakhir diperbarui: &lt;span id="lastUpdated" class="font-semibold"&gt;-&lt;/span&gt;&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const REFRESH_INTERVAL = 90000;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const STATUS = { WAITING: 'waiting', IN_TREATMENT: 'in-treatment', COMPLETED: 'completed' };</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const BRANCH_CONFIG = {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>name: "Purwokerto",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>url: "https://script.google.com/macros/s/AKfycbzKpxIOF2VABpGLbDRj9-9Bi2Gwi-urycCnScYhbn26Fy2GQqQGueMyqR6X7F8fkQaO/exec"</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function init() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>updateClockAndDate();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setInterval(updateClockAndDate, 1000);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>fetchData();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setInterval(fetchData, REFRESH_INTERVAL);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateClockAndDate() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const now = new Date();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('date').textContent = now.toLocaleDateString('id-ID', optionsDate);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', { hour12: false });</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>async function fetchData() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const response = await fetch(BRANCH_CONFIG.url);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const data = await response.json();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>updateUI(data);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} catch (error) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>console.error("Fetch Error:", error);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString("id-ID") + " WIB";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateUI(patients) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const safePatients = patients || [];</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const waitingList = safePatients.filter(p =&gt; p.status === STATUS.WAITING);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const treatingList = safePatients.filter(p =&gt; p.status === STATUS.IN_TREATMENT);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const completedList = safePatients.filter(p =&gt; p.status === STATUS.COMPLETED);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Update Summary (Horizontal border-top dihapus di sini)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('summaryContainer').innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid grid-cols-3 gap-8 text-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="pt-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-5xl font-bold status-waiting"&gt;${waitingList.length}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm tracking-widest font-bold opacity-70 uppercase"&gt;Menunggu&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="pt-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-5xl font-bold status-in-treatment"&gt;${treatingList.length}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm tracking-widest font-bold opacity-70 uppercase"&gt;Terapi&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="pt-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-5xl font-bold status-completed"&gt;${completedList.length}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm tracking-widest font-bold opacity-70 uppercase"&gt;Selesai&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>renderWaitingList(waitingList);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>renderStandardList('list-treating', treatingList);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Hanya 4 terakhir untuk kolom selesai</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const last4Completed = [...completedList].reverse().slice(0, 4);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>renderStandardList('list-completed', last4Completed);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function renderWaitingList(list) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const container = document.getElementById('list-waiting');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (list.length === 0) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = `&lt;div class="p-8 text-center opacity-50 italic"&gt;Kosong&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>container.style.animation = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const itemsToRender = [...list, ...list];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const originalLength = list.length;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>container.innerHTML = itemsToRender.map((p, index) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const isJunction = index === originalLength - 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return `</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="patient-row ${isJunction ? 'border-junction' : ''}"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center gap-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="text-2xl font-black bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-lg"&gt;${p.waitingNumber}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="text-2xl font-semibold"&gt;${p.patientName}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-lg font-medium text-orange-500"&gt;Antrian: ${p.queuePosition}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}).join('');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const duration = Math.max(12, originalLength * 3);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>container.style.animation = originalLength &gt; 6 ? `scroll-up ${duration}s linear infinite` : 'none';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function renderStandardList(elementId, list) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const container = document.getElementById(elementId);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (list.length === 0) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = `&lt;div class="p-8 text-center opacity-50 italic"&gt;Kosong&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>container.innerHTML = list.map(p =&gt; `</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="patient-row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center gap-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-2xl font-black bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-lg"&gt;${p.waitingNumber}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="text-2xl font-semibold"&gt;${p.patientName}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`).join('');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('DOMContentLoaded', init);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+<body class="dark">
+
+  <div class="tv-layout">
+    <header class="flex justify-between items-end mb-6">
+        <div>
+          <h1 class="text-4xl font-bold" style="color: var(--text-primary);">Monitor Antrian</h1>
+          <p class="text-xl" style="color: var(--text-secondary);">Bone Hacker - Cabang Purwokerto</p>
+        </div>
+        <div class="text-right">
+            <div id="date" class="text-xl font-medium mb-1" style="color: var(--text-secondary);">-</div>
+            <div id="clock" class="text-5xl font-mono font-bold text-blue-500">00:00:00</div>
+        </div>
+    </header>
+
+    <section id="summaryContainer" class="rounded-2xl shadow-sm p-6 mb-6" style="background-color: var(--bg-card); border: 1px solid var(--border-color);">
+        </section>
+
+    <main class="column-container">
+      
+      <div class="column-card">
+        <div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-waiting); color: var(--status-waiting);">Menunggu</div>
+        <div class="scroll-wrapper">
+          <div id="list-waiting" class="scroll-content"></div>
+        </div>
+      </div>
+
+      <div class="column-card">
+        <div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-in-treatment); color: var(--status-in-treatment);">Sedang Terapi</div>
+        <div id="list-treating" class="overflow-y-auto"></div>
+      </div>
+
+      <div class="column-card">
+        <div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-completed); color: var(--status-completed);">Selesai</div>
+        <div id="list-completed" class="overflow-y-auto"></div>
+      </div>
+
+    </main>
+
+    <footer class="mt-6 flex justify-between items-center text-sm" style="color: var(--text-secondary);">
+      <p>Sinkronisasi otomatis aktif</p>
+      <p>Terakhir diperbarui: <span id="lastUpdated" class="font-semibold">-</span></p>
+    </footer>
+  </div>
+
+  <script>
+    const REFRESH_INTERVAL = 90000;
+    const STATUS = { WAITING: 'waiting', IN_TREATMENT: 'in-treatment', COMPLETED: 'completed' };
+    const BRANCH_CONFIG = {
+      name: "Purwokerto",
+      url: "https://script.google.com/macros/s/AKfycbzKpxIOF2VABpGLbDRj9-9Bi2Gwi-urycCnScYhbn26Fy2GQqQGueMyqR6X7F8fkQaO/exec"
+    };
+
+    function init() {
+        updateClockAndDate();
+        setInterval(updateClockAndDate, 1000);
+        fetchData();
+        setInterval(fetchData, REFRESH_INTERVAL);
+    }
+
+    function updateClockAndDate() {
+        const now = new Date();
+        const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        document.getElementById('date').textContent = now.toLocaleDateString('id-ID', optionsDate);
+        document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
+    }
+
+    async function fetchData() {
+        try {
+            const response = await fetch(BRANCH_CONFIG.url);
+            const data = await response.json();
+            updateUI(data);
+        } catch (error) {
+            console.error("Fetch Error:", error);
+        }
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString("id-ID") + " WIB";
+    }
+
+    function updateUI(patients) {
+        const safePatients = patients || [];
+        
+        const waitingList = safePatients.filter(p => p.status === STATUS.WAITING);
+        const treatingList = safePatients.filter(p => p.status === STATUS.IN_TREATMENT);
+        const completedList = safePatients.filter(p => p.status === STATUS.COMPLETED);
+
+        // Update Summary (Horizontal border-top dihapus di sini)
+        document.getElementById('summaryContainer').innerHTML = `
+            <div class="grid grid-cols-3 gap-8 text-center">
+                <div class="pt-2">
+                    <span class="text-5xl font-bold status-waiting">${waitingList.length}</span>
+                    <p class="text-sm tracking-widest font-bold opacity-70 uppercase">Menunggu</p>
+                </div>
+                <div class="pt-2">
+                    <span class="text-5xl font-bold status-in-treatment">${treatingList.length}</span>
+                    <p class="text-sm tracking-widest font-bold opacity-70 uppercase">Terapi</p>
+                </div>
+                <div class="pt-2">
+                    <span class="text-5xl font-bold status-completed">${completedList.length}</span>
+                    <p class="text-sm tracking-widest font-bold opacity-70 uppercase">Selesai</p>
+                </div>
+            </div>
+        `;
+
+        renderWaitingList(waitingList);
+        renderStandardList('list-treating', treatingList);
+
+        // Hanya 4 terakhir untuk kolom selesai
+        const last4Completed = [...completedList].reverse().slice(0, 4);
+        renderStandardList('list-completed', last4Completed);
+    }
+
+    function renderWaitingList(list) {
+        const container = document.getElementById('list-waiting');
+        if (list.length === 0) {
+            container.innerHTML = `<div class="p-8 text-center opacity-50 italic">Kosong</div>`;
+            container.style.animation = 'none';
+            return;
+        }
+
+        const itemsToRender = [...list, ...list];
+        const originalLength = list.length;
+
+        container.innerHTML = itemsToRender.map((p, index) => {
+            const isJunction = index === originalLength - 1;
+            return `
+                <div class="patient-row ${isJunction ? 'border-junction' : ''}">
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl font-black bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-lg">${p.waitingNumber}</span>
+                        <span class="text-2xl font-semibold">${p.patientName}</span>
+                    </div>
+                    <span class="text-lg font-medium text-orange-500">Antrian: ${p.queuePosition}</span>
+                </div>
+            `;
+        }).join('');
+
+        const duration = Math.max(12, originalLength * 3);
+        container.style.animation = originalLength > 6 ? `scroll-up ${duration}s linear infinite` : 'none';
+    }
+
+    function renderStandardList(elementId, list) {
+        const container = document.getElementById(elementId);
+        if (list.length === 0) {
+            container.innerHTML = `<div class="p-8 text-center opacity-50 italic">Kosong</div>`;
+            return;
+        }
+
+        container.innerHTML = list.map(p => `
+            <div class="patient-row">
+                <div class="flex items-center gap-4">
+                    <span class="text-2xl font-black bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-lg">${p.waitingNumber}</span>
+                    <span class="text-2xl font-semibold">${p.patientName}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
