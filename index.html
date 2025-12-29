@@ -47,7 +47,6 @@
       padding: 2rem;
     }
 
-    /* Column Styles */
     .column-container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -65,7 +64,19 @@
       overflow: hidden;
     }
 
-    /* Auto-Scroll Logic */
+    /* Kotak Nomor: Abu-abu Muda, Font Hitam, No Shadow */
+    .number-badge {
+      background-color: #e5e5ea;
+      color: #000000;
+      font-weight: 800;
+      font-size: 1.5rem;
+      padding: 0.25rem 1rem;
+      border-radius: 0.75rem;
+      min-width: 3.5rem;
+      text-align: center;
+    }
+
+    /* Animasi Scroll */
     .scroll-wrapper {
       flex-grow: 1;
       overflow: hidden;
@@ -75,7 +86,6 @@
     .scroll-content {
       position: absolute;
       width: 100%;
-      animation: scroll-up 20s linear infinite;
     }
 
     @keyframes scroll-up {
@@ -91,7 +101,7 @@
       justify-content: space-between;
     }
 
-    /* Border kontras tebal untuk penanda akhir list saat loop */
+    /* Garis Oranye Tebal Penanda Loop */
     .border-junction {
       border-bottom: 8px solid var(--status-waiting) !important;
     }
@@ -119,7 +129,6 @@
         </section>
 
     <main class="column-container">
-      
       <div class="column-card">
         <div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-waiting); color: var(--status-waiting);">Menunggu</div>
         <div class="scroll-wrapper">
@@ -136,7 +145,6 @@
         <div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-completed); color: var(--status-completed);">Selesai</div>
         <div id="list-completed" class="overflow-y-auto"></div>
       </div>
-
     </main>
 
     <footer class="mt-6 flex justify-between items-center text-sm" style="color: var(--text-secondary);">
@@ -180,23 +188,21 @@
 
     function updateUI(patients) {
         const safePatients = patients || [];
-        
         const waitingList = safePatients.filter(p => p.status === STATUS.WAITING);
         const treatingList = safePatients.filter(p => p.status === STATUS.IN_TREATMENT);
         const completedList = safePatients.filter(p => p.status === STATUS.COMPLETED);
 
-        // Update Summary (Horizontal border-top dihapus di sini)
         document.getElementById('summaryContainer').innerHTML = `
             <div class="grid grid-cols-3 gap-8 text-center">
-                <div class="pt-2">
+                <div>
                     <span class="text-5xl font-bold status-waiting">${waitingList.length}</span>
                     <p class="text-sm tracking-widest font-bold opacity-70 uppercase">Menunggu</p>
                 </div>
-                <div class="pt-2">
+                <div>
                     <span class="text-5xl font-bold status-in-treatment">${treatingList.length}</span>
                     <p class="text-sm tracking-widest font-bold opacity-70 uppercase">Terapi</p>
                 </div>
-                <div class="pt-2">
+                <div>
                     <span class="text-5xl font-bold status-completed">${completedList.length}</span>
                     <p class="text-sm tracking-widest font-bold opacity-70 uppercase">Selesai</p>
                 </div>
@@ -205,10 +211,8 @@
 
         renderWaitingList(waitingList);
         renderStandardList('list-treating', treatingList);
-
-        // Hanya 4 terakhir untuk kolom selesai
-        const last4Completed = [...completedList].reverse().slice(0, 4);
-        renderStandardList('list-completed', last4Completed);
+        // Selesai: 4 terakhir
+        renderStandardList('list-completed', [...completedList].reverse().slice(0, 4));
     }
 
     function renderWaitingList(list) {
@@ -219,6 +223,7 @@
             return;
         }
 
+        // Duplikasi list untuk loop tanpa putus
         const itemsToRender = [...list, ...list];
         const originalLength = list.length;
 
@@ -227,7 +232,7 @@
             return `
                 <div class="patient-row ${isJunction ? 'border-junction' : ''}">
                     <div class="flex items-center gap-4">
-                        <span class="text-2xl font-black bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-lg">${p.waitingNumber}</span>
+                        <span class="number-badge">${p.waitingNumber}</span>
                         <span class="text-2xl font-semibold">${p.patientName}</span>
                     </div>
                     <span class="text-lg font-medium text-orange-500">Antrian: ${p.queuePosition}</span>
@@ -235,8 +240,14 @@
             `;
         }).join('');
 
-        const duration = Math.max(12, originalLength * 3);
-        container.style.animation = originalLength > 6 ? `scroll-up ${duration}s linear infinite` : 'none';
+        // Treshold 4: Jika pasien > 4, jalankan scroll
+        if (originalLength > 4) {
+            const duration = originalLength * 4; 
+            container.style.animation = `scroll-up ${duration}s linear infinite`;
+        } else {
+            container.style.animation = 'none';
+            container.style.transform = 'translateY(0)';
+        }
     }
 
     function renderStandardList(elementId, list) {
@@ -249,7 +260,7 @@
         container.innerHTML = list.map(p => `
             <div class="patient-row">
                 <div class="flex items-center gap-4">
-                    <span class="text-2xl font-black bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-lg">${p.waitingNumber}</span>
+                    <span class="number-badge">${p.waitingNumber}</span>
                     <span class="text-2xl font-semibold">${p.patientName}</span>
                 </div>
             </div>
