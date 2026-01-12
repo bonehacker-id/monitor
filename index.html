@@ -11,25 +11,35 @@
   
   <style>
     :root {
-      --bg-main: #f5f5f7;
+      /* Standard Light Mode */
+      --bg-main: #f0f2f5;
       --bg-card: #ffffff;
-      --bg-subtle: #f0f0f2;
-      --text-primary: #1d1d1f;
-      --text-secondary: #6e6e73;
+      --bg-subtle: #e4e6eb;
+      --text-primary: #050505;
+      --text-secondary: #65676b;
       --border-color: rgba(0, 0, 0, 0.1);
-      --status-waiting: #ff9500;
-      --status-in-treatment: #007aff;
-      --status-completed: #34c759;
+      
+      /* Colors */
+      --status-waiting: #d97706; 
+      --status-in-treatment: #2563eb; 
+      --status-completed: #16a34a; 
+      
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     html.dark {
+      /* High Contrast Dark Mode */
       --bg-main: #000000;
-      --bg-card: #1c1c1e;
-      --bg-subtle: #2c2c2e;
-      --text-primary: #f5f5f7;
-      --text-secondary: #8e8e93;
-      --border-color: rgba(255, 255, 255, 0.15);
+      --bg-card: #151515; 
+      --bg-subtle: #2a2a2a;
+      --text-primary: #ffffff; 
+      --text-secondary: #a0a0a0;
+      --border-color: #333333;
+      
+      /* NEON COLORS FOR DARK MODE */
+      --status-waiting: #fbbf24;       /* Bright Amber */
+      --status-in-treatment: #38bdf8;  /* NEW: Electric Sky Blue (Much Brighter) */
+      --status-completed: #4ade80;     /* Bright Green */
     }
 
     body {
@@ -41,11 +51,13 @@
       transition: background-color 0.3s, color 0.3s;
     }
 
+    /* Layout structure */
     .tv-layout {
       display: flex;
       flex-direction: column;
       height: 100vh;
-      padding: 2rem;
+      padding: 1.5rem 2rem 0 2rem; 
+      position: relative;
     }
 
     .column-container {
@@ -54,28 +66,38 @@
       gap: 1.5rem;
       flex-grow: 1;
       min-height: 0;
+      margin-bottom: 1rem;
     }
 
     .column-card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 1.5rem;
+      border-radius: 1rem;
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
 
     .number-badge {
-      background-color: #e5e5ea;
+      background-color: #ffffff;
       color: #000000;
-      font-weight: 800;
-      font-size: 1.5rem;
-      padding: 0.25rem 1rem;
-      border-radius: 0.75rem;
-      min-width: 3.5rem;
+      font-weight: 900;
+      font-size: 1.8rem; 
+      padding: 0.25rem 0;
+      border-radius: 0.5rem;
+      min-width: 4rem;
       text-align: center;
+      border: 2px solid #e5e5e5;
+    }
+    
+    html.dark .number-badge {
+        background-color: #333;
+        color: #fff;
+        border: 2px solid #555;
     }
 
+    /* Scroll Animations for Lists */
     .scroll-wrapper {
       flex-grow: 1;
       overflow: hidden;
@@ -108,91 +130,180 @@
     .status-in-treatment { color: var(--status-in-treatment); }
     .status-completed { color: var(--status-completed); }
 
-    #themeToggle {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 0.5rem 1rem;
-      border-radius: 99px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
+    /* --- TICKER STYLES (Seamless & Slow) --- */
+    .ticker-wrap {
+        width: calc(100% + 4rem); 
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        height: 60px;
+        overflow: hidden;
+        margin: 0 -2rem; 
+        display: flex;
+        align-items: center;
+    }
+    
+    .ticker-move {
+        display: flex;
+        width: fit-content;
+        /* 200s is the speed - Increase number to make it slower */
+        animation: ticker-seamless 200s linear infinite; 
+    }
+    
+    .ticker-item {
+        display: inline-block;
+        padding: 0 3rem; 
+        font-size: 1.1rem;
+        white-space: nowrap;
+        color: var(--text-primary);
+    }
+
+    .ticker-city {
+        font-weight: 900;
+        font-style: italic;
+        color: var(--status-in-treatment);
+        margin-right: 0.5rem;
+    }
+
+    @keyframes ticker-seamless {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    /* --- THEME BUTTON --- */
+    #themeBtn {
+        position: absolute;
+        top: 1.5rem;
+        right: 2rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 0.5rem;
+        border-radius: 999px;
+        z-index: 50;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #themeBtn:hover {
+        transform: scale(1.1);
     }
   </style>
 </head>
 <body class="dark">
 
   <div class="tv-layout">
-    <header class="flex justify-between items-center mb-6">
+    
+    <button id="themeBtn" onclick="toggleTheme()" title="Ganti Mode">
+        <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+        </svg>
+        <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+        </svg>
+    </button>
+
+    <header class="flex justify-between items-center mb-4">
         <div class="w-1/3">
-          <h1 class="text-4xl font-bold" style="color: var(--text-primary);">Monitor Antrian</h1>
-          <p class="text-xl" style="color: var(--text-secondary);">Bone Hacker - Purwokerto</p>
+          <h1 class="text-3xl font-black tracking-tight" style="color: var(--text-primary);">MONITOR ANTRIAN</h1>
+          <p class="text-lg font-medium" style="color: var(--text-secondary);">Bone Hacker - Purwokerto</p>
         </div>
 
         <div id="restNotice" class="hidden w-1/3 text-center">
-            <div class="bg-red-600 text-white px-6 py-3 rounded-2xl shadow-xl animate-pulse border-2 border-white/20">
-                <p class="text-2xl font-black uppercase tracking-tighter">SEDANG ISTIRAHAT</p>
-                <p id="restTimeDisplay" class="text-lg font-bold opacity-90 uppercase"></p>
+            <div class="bg-red-600 text-white px-6 py-2 rounded-xl shadow-xl animate-pulse border-2 border-white/20">
+                <p class="text-xl font-black uppercase tracking-tighter">SEDANG ISTIRAHAT</p>
+                <p id="restTimeDisplay" class="text-base font-bold opacity-90 uppercase"></p>
             </div>
         </div>
 
-        <div class="text-right w-1/3">
-            <div id="date" class="text-xl font-medium mb-1" style="color: var(--text-secondary);">-</div>
-            <div id="clock" class="text-5xl font-mono font-bold text-blue-500">00:00:00</div>
+        <div class="text-right w-1/3 pr-12"> 
+            <div id="clock" class="text-6xl font-mono font-black tracking-tighter" style="color: var(--status-in-treatment)">00:00:00</div>
+            <div id="date" class="text-lg font-bold uppercase tracking-wide mt-1" style="color: var(--text-secondary);">-</div>
         </div>
     </header>
 
-    <section id="summaryContainer" class="rounded-2xl shadow-sm p-8 mb-6" style="background-color: var(--bg-card); border: 1px solid var(--border-color);">
-    </section>
+    <section id="summaryContainer" class="rounded-xl shadow-sm p-4 mb-4 grid grid-cols-3 gap-8 text-center" style="background-color: var(--bg-card); border: 1px solid var(--border-color);">
+        </section>
 
     <main class="column-container">
       <div class="column-card">
-        <div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-waiting); color: var(--status-waiting);">Menunggu</div>
+        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4 bg-opacity-10" style="border-color: var(--status-waiting); background-color: rgba(251, 191, 36, 0.05); color: var(--status-waiting);">
+            Menunggu
+        </div>
         <div class="scroll-wrapper">
           <div id="list-waiting" class="scroll-content"></div>
         </div>
       </div>
 
       <div class="column-card">
-        <div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-in-treatment); color: var(--status-in-treatment);">Sedang Terapi</div>
+        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4 bg-opacity-10" style="border-color: var(--status-in-treatment); background-color: rgba(56, 189, 248, 0.05); color: var(--status-in-treatment);">
+            Sedang Terapi
+        </div>
         <div id="list-treating" class="overflow-y-auto"></div>
       </div>
 
       <div class="column-card">
-        <div class="p-4 text-center font-bold text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-completed); color: var(--status-completed);">Selesai</div>
+        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4 bg-opacity-10" style="border-color: var(--status-completed); background-color: rgba(74, 222, 128, 0.05); color: var(--status-completed);">
+            Selesai
+        </div>
         <div id="list-completed" class="overflow-y-auto"></div>
       </div>
     </main>
 
-    <footer class="mt-6 flex justify-between items-center text-sm" style="color: var(--text-secondary);">
-      <div class="flex items-center gap-4">
-          <button id="themeToggle" onclick="toggleTheme()">
-            <span id="themeIcon">🌙</span>
-            <span id="themeLabel" class="font-bold uppercase tracking-tighter">Mode Malam</span>
-          </button>
-          <p>Sinkronisasi otomatis aktif</p>
-      </div>
-      <p>Terakhir diperbarui: <span id="lastUpdated" class="font-semibold">-</span></p>
-    </footer>
+    <div class="ticker-wrap">
+        <div class="ticker-move">
+            <div class="flex">
+                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur (Utara FK Unsoed)</span>
+                <span class="ticker-item"><span class="ticker-city">PURBALINGGA:</span> RT 3/RW 2, Dusun Parung Bongas, Desa Kradenan, Kec. Mrebet</span>
+                <span class="ticker-item"><span class="ticker-city">PEMALANG:</span> RT 5/RW 7, Slarang Kedungsantri, Desa Surajaya, Kec. Pemalang</span>
+                <span class="ticker-item"><span class="ticker-city">CILACAP:</span> Jl. Munggur Barat, RT 4/RW 5, Kel. Mertasinga, Kec. Cilacap Utara</span>
+                <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari</span>
+                <span class="ticker-item"><span class="ticker-city">BATANG:</span> Gringsing, Gg. III No. 90, RT 2/RW 6, Kel. Gringsing, Kec. Gringsing</span>
+                <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang</span>
+                <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Masjid Baitul Mukhlasin, Dukuh Tegalsari, Desa kebulusan</span>
+                <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Berbah</span>
+                <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Paguyangan</span>
+            </div>
+            
+            <div class="flex">
+                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur (Utara FK Unsoed)</span>
+                <span class="ticker-item"><span class="ticker-city">PURBALINGGA:</span> RT 3/RW 2, Dusun Parung Bongas, Desa Kradenan, Kec. Mrebet</span>
+                <span class="ticker-item"><span class="ticker-city">PEMALANG:</span> RT 5/RW 7, Slarang Kedungsantri, Desa Surajaya, Kec. Pemalang</span>
+                <span class="ticker-item"><span class="ticker-city">CILACAP:</span> Jl. Munggur Barat, RT 4/RW 5, Kel. Mertasinga, Kec. Cilacap Utara</span>
+                <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari</span>
+                <span class="ticker-item"><span class="ticker-city">BATANG:</span> Gringsing, Gg. III No. 90, RT 2/RW 6, Kel. Gringsing, Kec. Gringsing</span>
+                <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang</span>
+                <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Masjid Baitul Mukhlasin, Dukuh Tegalsari, Desa kebulusan</span>
+                <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Berbah</span>
+                <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Paguyangan</span>
+            </div>
+        </div>
+    </div>
+
   </div>
 
   <script>
-    const REFRESH_INTERVAL = 90000;
-    const STATUS = { WAITING: 'waiting', IN_TREATMENT: 'in-treatment', COMPLETED: 'completed' };
+    // Configuration
+    const REFRESH_INTERVAL = 90000; 
+    const SCROLL_THRESHOLD = 4; 
     const BRANCH_CONFIG = {
       name: "Purwokerto",
       url: "https://script.google.com/macros/s/AKfycbzKpxIOF2VABpGLbDRj9-9Bi2Gwi-urycCnScYhbn26Fy2GQqQGueMyqR6X7F8fkQaO/exec"
     };
+    
+    const STATUS = { WAITING: 'waiting', IN_TREATMENT: 'in-treatment', COMPLETED: 'completed' };
 
     function init() {
         updateClockAndDate();
         setInterval(updateClockAndDate, 1000);
         fetchData();
         setInterval(fetchData, REFRESH_INTERVAL);
-        syncThemeUI();
+        syncThemeUI(); 
     }
 
+    // THEME FUNCTIONS
     function toggleTheme() {
         document.body.classList.toggle('dark');
         document.documentElement.classList.toggle('dark');
@@ -201,15 +312,25 @@
 
     function syncThemeUI() {
         const isDark = document.body.classList.contains('dark');
-        document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
-        document.getElementById('themeLabel').textContent = isDark ? 'Mode Malam' : 'Mode Terang';
+        const sun = document.getElementById('iconSun');
+        const moon = document.getElementById('iconMoon');
+        
+        if(isDark) {
+            sun.classList.remove('hidden');
+            moon.classList.add('hidden');
+        } else {
+            sun.classList.add('hidden');
+            moon.classList.remove('hidden');
+        }
     }
 
     function updateClockAndDate() {
         const now = new Date();
         const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
         document.getElementById('date').textContent = now.toLocaleDateString('id-ID', optionsDate);
-        document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
+        
+        // HH:MM:SS format
+        document.getElementById('clock').textContent = now.toLocaleTimeString('en-GB', { hour12: false });
     }
 
     async function fetchData() {
@@ -220,7 +341,6 @@
         } catch (error) {
             console.error("Fetch Error:", error);
         }
-        document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString("id-ID") + " WIB";
     }
 
     function updateUI(patients) {
@@ -244,21 +364,19 @@
         const treatingList = activePatients.filter(p => p.status === STATUS.IN_TREATMENT);
         const completedList = activePatients.filter(p => p.status === STATUS.COMPLETED);
 
-        // Render Summary dengan Font 7XL
+        // Render Summary 
         document.getElementById('summaryContainer').innerHTML = `
-            <div class="grid grid-cols-3 gap-8 text-center">
-                <div>
-                    <span class="text-7xl font-black status-waiting">${waitingList.length}</span>
-                    <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-2">Menunggu</p>
-                </div>
-                <div>
-                    <span class="text-7xl font-black status-in-treatment">${treatingList.length}</span>
-                    <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-2">Terapi</p>
-                </div>
-                <div>
-                    <span class="text-7xl font-black status-completed">${completedList.length}</span>
-                    <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-2">Selesai</p>
-                </div>
+            <div>
+                <span class="text-6xl font-black status-waiting">${waitingList.length}</span>
+                <p class="text-sm tracking-widest font-bold opacity-60 uppercase mt-1">Menunggu</p>
+            </div>
+            <div>
+                <span class="text-6xl font-black status-in-treatment">${treatingList.length}</span>
+                <p class="text-sm tracking-widest font-bold opacity-60 uppercase mt-1">Terapi</p>
+            </div>
+            <div>
+                <span class="text-6xl font-black status-completed">${completedList.length}</span>
+                <p class="text-sm tracking-widest font-bold opacity-60 uppercase mt-1">Selesai</p>
             </div>
         `;
 
@@ -269,30 +387,38 @@
 
     function renderWaitingList(list) {
         const container = document.getElementById('list-waiting');
+        
         if (list.length === 0) {
-            container.innerHTML = `<div class="p-8 text-center opacity-50 italic">Kosong</div>`;
+            container.innerHTML = `<div class="p-8 text-center opacity-50 italic font-medium">Antrian Kosong</div>`;
             container.style.animation = 'none';
             return;
         }
 
-        const itemsToRender = [...list, ...list];
+        let itemsToRender = list;
+        let shouldScroll = list.length > SCROLL_THRESHOLD;
+
+        if (shouldScroll) {
+            itemsToRender = [...list, ...list];
+        }
+
         const originalLength = list.length;
 
         container.innerHTML = itemsToRender.map((p, index) => {
-            const isJunction = index === originalLength - 1;
+            const isJunction = shouldScroll && index === originalLength - 1;
+            
             return `
                 <div class="patient-row ${isJunction ? 'border-junction' : ''}">
                     <div class="flex items-center gap-4">
                         <span class="number-badge">${p.waitingNumber}</span>
-                        <span class="text-2xl font-semibold">${p.patientName}</span>
+                        <span class="text-2xl font-bold truncate max-w-[220px]">${p.patientName}</span>
                     </div>
-                    <span class="text-lg font-medium text-orange-500">Antrian: ${p.queuePosition}</span>
+                    <span class="text-xl font-bold status-waiting">#${p.queuePosition}</span>
                 </div>
             `;
         }).join('');
 
-        if (originalLength > 4) {
-            const duration = originalLength * 4; 
+        if (shouldScroll) {
+            const duration = originalLength * 5; 
             container.style.animation = `scroll-up ${duration}s linear infinite`;
         } else {
             container.style.animation = 'none';
@@ -302,8 +428,9 @@
 
     function renderStandardList(elementId, list) {
         const container = document.getElementById(elementId);
+        
         if (list.length === 0) {
-            container.innerHTML = `<div class="p-8 text-center opacity-50 italic">Kosong</div>`;
+            container.innerHTML = `<div class="p-8 text-center opacity-50 italic font-medium">Kosong</div>`;
             return;
         }
 
@@ -311,7 +438,7 @@
             <div class="patient-row">
                 <div class="flex items-center gap-4">
                     <span class="number-badge">${p.waitingNumber}</span>
-                    <span class="text-2xl font-semibold">${p.patientName}</span>
+                    <span class="text-2xl font-bold truncate max-w-[280px]">${p.patientName}</span>
                 </div>
             </div>
         `).join('');
