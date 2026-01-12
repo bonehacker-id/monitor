@@ -38,7 +38,7 @@
       
       /* NEON COLORS FOR DARK MODE */
       --status-waiting: #fbbf24;       /* Bright Amber */
-      --status-in-treatment: #38bdf8;  /* NEW: Electric Sky Blue (Much Brighter) */
+      --status-in-treatment: #38bdf8;  /* Electric Sky Blue */
       --status-completed: #4ade80;     /* Bright Green */
     }
 
@@ -135,7 +135,9 @@
         width: calc(100% + 4rem); 
         background-color: var(--bg-card);
         border-top: 1px solid var(--border-color);
-        height: 60px;
+        /* Increased height slightly and added flex-shrink so it doesn't get crushed */
+        height: 72px; 
+        flex-shrink: 0; 
         overflow: hidden;
         margin: 0 -2rem; 
         display: flex;
@@ -145,14 +147,14 @@
     .ticker-move {
         display: flex;
         width: fit-content;
-        /* 200s is the speed - Increase number to make it slower */
-        animation: ticker-seamless 200s linear infinite; 
+        /* 250s for slower scroll */
+        animation: ticker-seamless 250s linear infinite; 
     }
     
     .ticker-item {
         display: inline-block;
         padding: 0 3rem; 
-        font-size: 1.1rem;
+        font-size: 1.25rem; /* Slightly larger text for readability */
         white-space: nowrap;
         color: var(--text-primary);
     }
@@ -205,7 +207,7 @@
         </svg>
     </button>
 
-    <header class="flex justify-between items-center mb-4">
+    <header class="flex justify-between items-center mb-4 flex-shrink-0">
         <div class="w-1/3">
           <h1 class="text-3xl font-black tracking-tight" style="color: var(--text-primary);">MONITOR ANTRIAN</h1>
           <p class="text-lg font-medium" style="color: var(--text-secondary);">Bone Hacker - Purwokerto</p>
@@ -224,7 +226,7 @@
         </div>
     </header>
 
-    <section id="summaryContainer" class="rounded-xl shadow-sm p-4 mb-4 grid grid-cols-3 gap-8 text-center" style="background-color: var(--bg-card); border: 1px solid var(--border-color);">
+    <section id="summaryContainer" class="rounded-xl shadow-sm py-6 mb-4 grid grid-cols-3 gap-8 text-center flex-shrink-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color);">
         </section>
 
     <main class="column-container">
@@ -255,29 +257,29 @@
     <div class="ticker-wrap">
         <div class="ticker-move">
             <div class="flex">
-                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur (Utara FK Unsoed)</span>
+                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur (Utara Fakultas Kedokteran Unsoed)</span>
                 <span class="ticker-item"><span class="ticker-city">PURBALINGGA:</span> RT 3/RW 2, Dusun Parung Bongas, Desa Kradenan, Kec. Mrebet</span>
                 <span class="ticker-item"><span class="ticker-city">PEMALANG:</span> RT 5/RW 7, Slarang Kedungsantri, Desa Surajaya, Kec. Pemalang</span>
                 <span class="ticker-item"><span class="ticker-city">CILACAP:</span> Jl. Munggur Barat, RT 4/RW 5, Kel. Mertasinga, Kec. Cilacap Utara</span>
-                <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari</span>
+                <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari, Kec. Kedungreja</span>
                 <span class="ticker-item"><span class="ticker-city">BATANG:</span> Gringsing, Gg. III No. 90, RT 2/RW 6, Kel. Gringsing, Kec. Gringsing</span>
-                <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang</span>
-                <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Masjid Baitul Mukhlasin, Dukuh Tegalsari, Desa kebulusan</span>
-                <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Berbah</span>
-                <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Paguyangan</span>
+                <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang, Kab. Tasikmalaya</span>
+                <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Masjid Baitul Mukhlasin, Dukuh Tegalsari, Desa kebulusan, Kec. Pejagoan, Kab. Kebumen</span>
+                <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Kec. Berbah, Kab. Sleman</span>
+                <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Kec. Paguyangan, Kab. Brebes</span>
             </div>
             
             <div class="flex">
-                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur (Utara FK Unsoed)</span>
+                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur (Utara Fakultas Kedokteran Unsoed)</span>
                 <span class="ticker-item"><span class="ticker-city">PURBALINGGA:</span> RT 3/RW 2, Dusun Parung Bongas, Desa Kradenan, Kec. Mrebet</span>
                 <span class="ticker-item"><span class="ticker-city">PEMALANG:</span> RT 5/RW 7, Slarang Kedungsantri, Desa Surajaya, Kec. Pemalang</span>
                 <span class="ticker-item"><span class="ticker-city">CILACAP:</span> Jl. Munggur Barat, RT 4/RW 5, Kel. Mertasinga, Kec. Cilacap Utara</span>
-                <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari</span>
+                <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari, Kec. Kedungreja</span>
                 <span class="ticker-item"><span class="ticker-city">BATANG:</span> Gringsing, Gg. III No. 90, RT 2/RW 6, Kel. Gringsing, Kec. Gringsing</span>
-                <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang</span>
-                <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Masjid Baitul Mukhlasin, Dukuh Tegalsari, Desa kebulusan</span>
-                <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Berbah</span>
-                <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Paguyangan</span>
+                <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang, Kab. Tasikmalaya</span>
+                <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Masjid Baitul Mukhlasin, Dukuh Tegalsari, Desa kebulusan, Kec. Pejagoan, Kab. Kebumen</span>
+                <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Kec. Berbah, Kab. Sleman</span>
+                <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Kec. Paguyangan, Kab. Brebes</span>
             </div>
         </div>
     </div>
@@ -364,25 +366,26 @@
         const treatingList = activePatients.filter(p => p.status === STATUS.IN_TREATMENT);
         const completedList = activePatients.filter(p => p.status === STATUS.COMPLETED);
 
-        // Render Summary 
+        // Render Summary (UPDATED: Balanced 7XL)
         document.getElementById('summaryContainer').innerHTML = `
             <div>
-                <span class="text-6xl font-black status-waiting">${waitingList.length}</span>
-                <p class="text-sm tracking-widest font-bold opacity-60 uppercase mt-1">Menunggu</p>
+                <span class="text-7xl font-black status-waiting">${waitingList.length}</span>
+                <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-1">Menunggu</p>
             </div>
             <div>
-                <span class="text-6xl font-black status-in-treatment">${treatingList.length}</span>
-                <p class="text-sm tracking-widest font-bold opacity-60 uppercase mt-1">Terapi</p>
+                <span class="text-7xl font-black status-in-treatment">${treatingList.length}</span>
+                <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-1">Terapi</p>
             </div>
             <div>
-                <span class="text-6xl font-black status-completed">${completedList.length}</span>
-                <p class="text-sm tracking-widest font-bold opacity-60 uppercase mt-1">Selesai</p>
+                <span class="text-7xl font-black status-completed">${completedList.length}</span>
+                <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-1">Selesai</p>
             </div>
         `;
 
         renderWaitingList(waitingList);
         renderStandardList('list-treating', treatingList);
-        renderStandardList('list-completed', [...completedList].reverse().slice(0, 4));
+        // Show all completed
+        renderStandardList('list-completed', [...completedList].reverse());
     }
 
     function renderWaitingList(list) {
