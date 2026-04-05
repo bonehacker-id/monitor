@@ -196,6 +196,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      transition: background-color 0.2s; /* Halus saat berubah warna */
     }
 
     .border-junction {
@@ -342,13 +343,12 @@
                 <span class="ticker-item"><span class="ticker-city">PEMALANG:</span> Jl. Banjar Dawa-Penggarit, Jebed Selatan, Kec. Taman, Kab. Pemalang (Depan Warung Tengah Sawah Bu Ruslani)</span>
                 <span class="ticker-item"><span class="ticker-city">CILACAP:</span> Jl. Munggur Barat, RT 4/RW 5, Kel. Mertasinga, Kec. Cilacap Utara</span>
                 <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari, Kec. Kedungreja</span>
-                <span class="ticker-item"><span class="ticker-city">BATANG:</span> Gringsing, Gg. III No. 90, RT 2/RW 6, Kel. Gringsing, Kec. Gringsing</span>
                 <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang, Kab. Tasikmalaya</span>
                 <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Jl. KH. Ahmad Dahlan, RT 14/RW 04, Dukuh Menteyek, Desa Kebulusan, Kec. Pejagoan, Kab. Kebumen (Seberang gapura SMAN 1 Pejagoan)</span>
                 <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Kec. Berbah, Kab. Sleman</span>
                 <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Kec. Paguyangan, Kab. Brebes</span>
                 <span class="ticker-item"><span class="ticker-city">TEGAL:</span> Jl. Raya Lebaksiu-Slawi, Desa Pendawa, Kec. Lebaksiu, Kab. Tegal (utara pom bensin Pendawa)</span>
-                <span class="ticker-item"><span class="ticker-city">BREBES (Selasa, Rabu, Kamis):</span> Jl. Jend. Ahmad Yani No. 100, Sawah, desa Bulakelor, Kec. Ketanggungan, Kab. Brebes (depan pom bensin Bulakelor)</span>
+                <span class="ticker-item"><span class="ticker-city">BREBES:</span> Jl. Jend. Ahmad Yani No. 100, Sawah, desa Bulakelor, Kec. Ketanggungan, Kab. Brebes (depan pom bensin Bulakelor)</span>
             </div>
             
             <div class="flex">
@@ -357,13 +357,12 @@
                 <span class="ticker-item"><span class="ticker-city">PEMALANG:</span> Jl. Banjar Dawa-Penggarit, Jebed Selatan, Kec. Taman, Kab. Pemalang (Depan Warung Tengah Sawah Bu Ruslani)</span>
                 <span class="ticker-item"><span class="ticker-city">CILACAP:</span> Jl. Munggur Barat, RT 4/RW 5, Kel. Mertasinga, Kec. Cilacap Utara</span>
                 <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari, Kec. Kedungreja</span>
-                <span class="ticker-item"><span class="ticker-city">BATANG:</span> Gringsing, Gg. III No. 90, RT 2/RW 6, Kel. Gringsing, Kec. Gringsing</span>
                 <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang, Kab. Tasikmalaya</span>
                 <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Jl. KH. Ahmad Dahlan, RT 14/RW 04, Dukuh Menteyek, Desa Kebulusan, Kec. Pejagoan, Kab. Kebumen (Seberang gapura SMAN 1 Pejagoan)</span>
                 <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Kec. Berbah, Kab. Sleman</span>
                 <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Kec. Paguyangan, Kab. Brebes</span>
                 <span class="ticker-item"><span class="ticker-city">TEGAL:</span> Jl. Raya Lebaksiu-Slawi, Desa Pendawa, Kec. Lebaksiu, Kab. Tegal (utara pom bensin Pendawa)</span>
-                <span class="ticker-item"><span class="ticker-city">BREBES (Selasa, Rabu, Kamis):</span> Jl. Jend. Ahmad Yani No. 100, Sawah, desa Bulakelor, Kec. Ketanggungan, Kab. Brebes (depan pom bensin Bulakelor)</span>
+                <span class="ticker-item"><span class="ticker-city">BREBES:</span> Jl. Jend. Ahmad Yani No. 100, Sawah, desa Bulakelor, Kec. Ketanggungan, Kab. Brebes (depan pom bensin Bulakelor)</span>
             </div>
         </div>
     </div>
@@ -493,13 +492,21 @@
         container.innerHTML = itemsToRender.map((p, index) => {
             const isJunction = shouldScroll && index === originalLength - 1;
             
+            // Logika tanda strip: Cek, hapus strip untuk tampilan, dan tentukan class warna
+            const hasDash = p.patientName.includes('-');
+            const displayName = p.patientName.replace('-', '').trim(); // Hapus strip di monitor
+            const highlightClass = hasDash ? 'bg-red-600 text-white shadow-lg border-red-700' : '';
+            const textClass = hasDash ? 'text-white' : '';
+            // Khusus nomor antrian di kanan biar tetep kontras kalau background merah
+            const queuePosClass = hasDash ? 'text-yellow-200' : 'status-waiting';
+            
             return `
-                <div class="patient-row ${isJunction ? 'border-junction' : ''}">
+                <div class="patient-row ${isJunction ? 'border-junction' : ''} ${highlightClass}">
                     <div class="flex items-center gap-4">
                         <span class="number-badge">${p.waitingNumber}</span>
-                        <span class="text-2xl font-bold truncate max-w-[220px]">${p.patientName}</span>
+                        <span class="text-2xl font-bold truncate max-w-[220px] ${textClass}">${displayName}</span>
                     </div>
-                    <span class="text-xl font-bold status-waiting">#${p.queuePosition}</span>
+                    <span class="text-xl font-bold ${queuePosClass}">#${p.queuePosition}</span>
                 </div>
             `;
         }).join('');
@@ -521,14 +528,22 @@
             return;
         }
 
-        container.innerHTML = list.map(p => `
-            <div class="patient-row">
-                <div class="flex items-center gap-4">
-                    <span class="number-badge">${p.waitingNumber}</span>
-                    <span class="text-2xl font-bold truncate max-w-[280px]">${p.patientName}</span>
+        container.innerHTML = list.map(p => {
+            // Logika tanda strip sama seperti di atas
+            const hasDash = p.patientName.includes('-');
+            const displayName = p.patientName.replace('-', '').trim(); // Hapus strip di monitor
+            const highlightClass = hasDash ? 'bg-red-600 text-white shadow-lg border-red-700' : '';
+            const textClass = hasDash ? 'text-white' : '';
+
+            return `
+                <div class="patient-row ${highlightClass}">
+                    <div class="flex items-center gap-4">
+                        <span class="number-badge">${p.waitingNumber}</span>
+                        <span class="text-2xl font-bold truncate max-w-[280px] ${textClass}">${displayName}</span>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     document.addEventListener('DOMContentLoaded', init);
