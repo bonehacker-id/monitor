@@ -11,17 +11,15 @@
   
   <style>
     :root {
-      /* Standard Light Mode - Glassmorphism Base */
       --bg-main: #f0f2f5;
-      --bg-card: rgba(255, 255, 255, 0.75); /* Agak transparan untuk efek kaca */
+      --bg-card: rgba(255, 255, 255, 0.75); 
       --bg-subtle: rgba(0, 0, 0, 0.05);
       --text-primary: #050505;
       --text-secondary: #4b5563;
-      --border-color: rgba(255, 255, 255, 0.5); /* Border terang agar terlihat seperti kaca */
+      --border-color: rgba(255, 255, 255, 0.5); 
       --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-      --orb-opacity: 0.4; /* Transparansi orb di mode terang */
+      --orb-opacity: 0.4; 
       
-      /* Colors */
       --status-waiting: #d97706; 
       --status-in-treatment: #2563eb; 
       --status-completed: #16a34a; 
@@ -30,17 +28,15 @@
     }
 
     html.dark {
-      /* High Contrast Dark Mode - Glassmorphism Base */
       --bg-main: #000000;
-      --bg-card: rgba(20, 20, 20, 0.75); /* Gelap transparan */
+      --bg-card: rgba(20, 20, 20, 0.75); 
       --bg-subtle: rgba(255, 255, 255, 0.05);
       --text-primary: #ffffff; 
       --text-secondary: #a0a0a0;
       --border-color: rgba(255, 255, 255, 0.1);
       --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-      --orb-opacity: 0.4; /* Transparansi orb di mode gelap */
+      --orb-opacity: 0.4; 
       
-      /* NEON COLORS FOR DARK MODE */
       --status-waiting: #fbbf24;       
       --status-in-treatment: #38bdf8;  
       --status-completed: #4ade80;     
@@ -53,107 +49,34 @@
       height: 100vh;
       width: 100vw;
       transition: background-color 0.3s, color 0.3s;
-      position: relative; /* Penting untuk orb */
+      position: relative; 
     }
 
-    /* --- BACKGROUND ORB ANIMATION --- */
     .ambient-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -10;
-        overflow: hidden;
-        background-color: var(--bg-main);
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; overflow: hidden; background-color: var(--bg-main);
     }
 
-    .orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(120px); /* Membuat efek gradasi menyebar / blur tingkat tinggi */
-        opacity: var(--orb-opacity);
-        transition: opacity 0.5s ease;
-    }
+    .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: var(--orb-opacity); transition: opacity 0.5s ease; }
+    .orb-orange { background-color: var(--status-waiting); width: 50vw; height: 50vw; top: -10%; left: -10%; animation: float-orange 25s ease-in-out infinite alternate; }
+    .orb-blue { background-color: var(--status-in-treatment); width: 60vw; height: 60vw; bottom: -20%; right: -10%; animation: float-blue 30s ease-in-out infinite alternate; }
+    .orb-green { background-color: var(--status-completed); width: 45vw; height: 45vw; top: 30%; left: 40%; animation: float-green 20s ease-in-out infinite alternate; }
 
-    .orb-orange {
-        background-color: var(--status-waiting);
-        width: 50vw;
-        height: 50vw;
-        top: -10%;
-        left: -10%;
-        animation: float-orange 25s ease-in-out infinite alternate;
-    }
+    @keyframes float-orange { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(15vw, 15vh) scale(1.1); } 100% { transform: translate(-5vw, 10vh) scale(0.9); } }
+    @keyframes float-blue { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-15vw, -20vh) scale(1.2); } 100% { transform: translate(5vw, -10vh) scale(0.95); } }
+    @keyframes float-green { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(10vw, -15vh) scale(1.3); } 100% { transform: translate(-15vw, 5vh) scale(1); } }
 
-    .orb-blue {
-        background-color: var(--status-in-treatment);
-        width: 60vw;
-        height: 60vw;
-        bottom: -20%;
-        right: -10%;
-        animation: float-blue 30s ease-in-out infinite alternate;
-    }
+    .tv-layout { display: flex; flex-direction: column; height: 100vh; padding: 1.5rem 2rem 0 2rem; position: relative; }
+    .column-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; flex-grow: 1; min-height: 0; margin-bottom: 1rem; }
 
-    .orb-green {
-        background-color: var(--status-completed);
-        width: 45vw;
-        height: 45vw;
-        top: 30%;
-        left: 40%;
-        animation: float-green 20s ease-in-out infinite alternate;
-    }
-
-    @keyframes float-orange {
-        0% { transform: translate(0, 0) scale(1); }
-        50% { transform: translate(15vw, 15vh) scale(1.1); }
-        100% { transform: translate(-5vw, 10vh) scale(0.9); }
-    }
-
-    @keyframes float-blue {
-        0% { transform: translate(0, 0) scale(1); }
-        50% { transform: translate(-15vw, -20vh) scale(1.2); }
-        100% { transform: translate(5vw, -10vh) scale(0.95); }
-    }
-
-    @keyframes float-green {
-        0% { transform: translate(0, 0) scale(1); }
-        50% { transform: translate(10vw, -15vh) scale(1.3); }
-        100% { transform: translate(-15vw, 5vh) scale(1); }
-    }
-
-    /* --- LAYOUT UTAMA --- */
-    .tv-layout {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      padding: 1.5rem 2rem 0 2rem; 
-      position: relative;
-    }
-
-    .column-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      flex-grow: 1;
-      min-height: 0;
-      margin-bottom: 1rem;
-    }
-
-    /* --- STYLE GLASSMORPHISM UNTUK ELEMEN UI --- */
     .glass-panel {
       background-color: var(--bg-card);
-      backdrop-filter: blur(16px); /* Efek Kaca Buram */
+      backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
       box-shadow: var(--card-shadow);
     }
 
-    .column-card {
-      border-radius: 1rem;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+    .column-card { border-radius: 1rem; display: flex; flex-direction: column; overflow: hidden; }
 
     .number-badge {
       background-color: rgba(255, 255, 255, 0.9);
@@ -167,23 +90,10 @@
       border: 2px solid rgba(229, 229, 229, 0.5);
     }
     
-    html.dark .number-badge {
-        background-color: rgba(51, 51, 51, 0.9);
-        color: #fff;
-        border: 2px solid rgba(85, 85, 85, 0.5);
-    }
+    html.dark .number-badge { background-color: rgba(51, 51, 51, 0.9); color: #fff; border: 2px solid rgba(85, 85, 85, 0.5); }
 
-    /* Scroll Animations for Lists */
-    .scroll-wrapper {
-      flex-grow: 1;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .scroll-content {
-      position: absolute;
-      width: 100%;
-    }
+    .scroll-wrapper { flex-grow: 1; overflow: hidden; position: relative; }
+    .scroll-content { position: absolute; width: 100%; }
 
     @keyframes scroll-up {
       0% { transform: translateY(0); }
@@ -196,76 +106,38 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: background-color 0.2s; /* Halus saat berubah warna */
     }
 
-    .border-junction {
-      border-bottom: 8px solid var(--status-waiting) !important;
+    /* Styling baris pemisah agar setinggi patient-row */
+    .break-separator {
+      background-color: #450a0a; /* Maroon gelap (red-950) */
+      color: #ffffff;
+      text-align: center;
+      padding: 1.25rem 1.5rem; /* Menyamakan dengan patient-row */
+      font-weight: 900;
+      font-size: 1.5rem; /* text-2xl setara nama */
+      letter-spacing: 0.15em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
     }
 
+    .border-junction { border-bottom: 8px solid var(--status-waiting) !important; }
     .status-waiting { color: var(--status-waiting); }
     .status-in-treatment { color: var(--status-in-treatment); }
     .status-completed { color: var(--status-completed); }
 
-    /* --- TICKER STYLES --- */
     .ticker-wrap {
-        width: calc(100% + 4rem); 
-        height: 72px; 
-        flex-shrink: 0; 
-        overflow: hidden;
-        margin: 0 -2rem; 
-        display: flex;
-        align-items: center;
-        border-top: 1px solid var(--border-color);
-        /* Menambahkan efek glass di area ticker */
-        background-color: var(--bg-card);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        width: calc(100% + 4rem); height: 72px; flex-shrink: 0; overflow: hidden; margin: 0 -2rem; display: flex; align-items: center;
+        border-top: 1px solid var(--border-color); background-color: var(--bg-card); backdrop-filter: blur(16px);
     }
-    
-    .ticker-move {
-        display: flex;
-        width: fit-content;
-        animation: ticker-seamless 250s linear infinite; 
-    }
-    
-    .ticker-item {
-        display: inline-block;
-        padding: 0 3rem; 
-        font-size: 1.25rem; 
-        white-space: nowrap;
-        color: var(--text-primary);
-    }
+    .ticker-move { display: flex; width: fit-content; animation: ticker-seamless 250s linear infinite; }
+    .ticker-item { display: inline-block; padding: 0 3rem; font-size: 1.25rem; white-space: nowrap; color: var(--text-primary); }
+    .ticker-city { font-weight: 900; font-style: italic; color: var(--status-in-treatment); margin-right: 0.5rem; }
+    @keyframes ticker-seamless { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    .ticker-city {
-        font-weight: 900;
-        font-style: italic;
-        color: var(--status-in-treatment);
-        margin-right: 0.5rem;
-    }
-
-    @keyframes ticker-seamless {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-
-    /* --- THEME BUTTON --- */
     #themeBtn {
-        position: absolute;
-        top: 1.5rem;
-        right: 2rem;
-        border-radius: 999px;
-        z-index: 50;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        padding: 0.5rem;
-        color: var(--text-primary);
-    }
-    #themeBtn:hover {
-        transform: scale(1.1);
+        position: absolute; top: 1.5rem; right: 2rem; border-radius: 999px; z-index: 50; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; transition: all 0.2s; padding: 0.5rem; color: var(--text-primary);
     }
   </style>
 </head>
@@ -279,7 +151,7 @@
 
   <div class="tv-layout">
     
-    <button id="themeBtn" class="glass-panel" onclick="toggleTheme()" title="Ganti Mode">
+    <button id="themeBtn" class="glass-panel" onclick="toggleTheme()">
         <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
         </svg>
@@ -290,47 +162,36 @@
 
     <header class="flex justify-between items-center mb-4 flex-shrink-0">
         <div class="w-1/3">
-          <h1 class="text-3xl font-black tracking-tight" style="color: var(--text-primary); text-shadow: 0 2px 4px rgba(0,0,0,0.1);">MONITOR ANTRIAN</h1>
+          <h1 class="text-3xl font-black tracking-tight" style="color: var(--text-primary);">MONITOR ANTRIAN</h1>
           <p class="text-lg font-medium" style="color: var(--text-secondary);">Bone Hacker - Purwokerto</p>
         </div>
-
         <div id="restNotice" class="hidden w-1/3 text-center">
-            <div class="bg-red-600 text-white px-6 py-2 rounded-xl shadow-xl animate-pulse border-2 border-white/20">
-                <p class="text-xl font-black uppercase tracking-tighter">SEDANG ISTIRAHAT</p>
+            <div class="bg-red-600 text-white px-6 py-2 rounded-xl shadow-xl animate-pulse">
+                <p class="text-xl font-black uppercase">SEDANG ISTIRAHAT</p>
                 <p id="restTimeDisplay" class="text-base font-bold opacity-90 uppercase"></p>
             </div>
         </div>
-
         <div class="text-right w-1/3 pr-12"> 
-            <div id="clock" class="text-6xl font-mono font-black tracking-tighter drop-shadow-md" style="color: var(--status-in-treatment)">00:00:00</div>
-            <div id="date" class="text-lg font-bold uppercase tracking-wide mt-1" style="color: var(--text-secondary);">-</div>
+            <div id="clock" class="text-6xl font-mono font-black tracking-tighter" style="color: var(--status-in-treatment)">00:00:00</div>
+            <div id="date" class="text-lg font-bold uppercase mt-1" style="color: var(--text-secondary);">-</div>
         </div>
     </header>
 
-    <section id="summaryContainer" class="glass-panel rounded-xl py-6 mb-4 grid grid-cols-3 gap-8 text-center flex-shrink-0">
-        </section>
+    <section id="summaryContainer" class="glass-panel rounded-xl py-6 mb-4 grid grid-cols-3 gap-8 text-center flex-shrink-0"></section>
 
     <main class="column-container">
       <div class="column-card glass-panel">
-        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4 bg-opacity-10" style="border-color: var(--status-waiting); background-color: rgba(251, 191, 36, 0.05); color: var(--status-waiting);">
-            Menunggu
-        </div>
+        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-waiting); background-color: rgba(251, 191, 36, 0.05); color: var(--status-waiting);">Menunggu</div>
         <div class="scroll-wrapper">
           <div id="list-waiting" class="scroll-content"></div>
         </div>
       </div>
-
       <div class="column-card glass-panel">
-        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4 bg-opacity-10" style="border-color: var(--status-in-treatment); background-color: rgba(56, 189, 248, 0.05); color: var(--status-in-treatment);">
-            Sedang Terapi
-        </div>
+        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-in-treatment); background-color: rgba(56, 189, 248, 0.05); color: var(--status-in-treatment);">Sedang Terapi</div>
         <div id="list-treating" class="overflow-y-auto"></div>
       </div>
-
       <div class="column-card glass-panel">
-        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4 bg-opacity-10" style="border-color: var(--status-completed); background-color: rgba(74, 222, 128, 0.05); color: var(--status-completed);">
-            Selesai
-        </div>
+        <div class="p-3 text-center font-black text-xl uppercase tracking-widest border-b-4" style="border-color: var(--status-completed); background-color: rgba(74, 222, 128, 0.05); color: var(--status-completed);">Selesai</div>
         <div id="list-completed" class="overflow-y-auto"></div>
       </div>
     </main>
@@ -338,46 +199,24 @@
     <div class="ticker-wrap glass-panel">
         <div class="ticker-move">
             <div class="flex">
-                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur (Utara Fakultas Kedokteran Unsoed)</span>
-                <span class="ticker-item"><span class="ticker-city">PURBALINGGA:</span> RT 3/RW 2, Dusun Parung Bongas, Desa Kradenan, Kec. Mrebet</span>
-                <span class="ticker-item"><span class="ticker-city">PEMALANG:</span> Jl. Banjar Dawa-Penggarit, Jebed Selatan, Kec. Taman, Kab. Pemalang (Depan Warung Tengah Sawah Bu Ruslani)</span>
-                <span class="ticker-item"><span class="ticker-city">CILACAP:</span> Jl. Munggur Barat, RT 4/RW 5, Kel. Mertasinga, Kec. Cilacap Utara</span>
-                <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari, Kec. Kedungreja</span>
-                <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang, Kab. Tasikmalaya</span>
-                <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Jl. KH. Ahmad Dahlan, RT 14/RW 04, Dukuh Menteyek, Desa Kebulusan, Kec. Pejagoan, Kab. Kebumen (Seberang gapura SMAN 1 Pejagoan)</span>
-                <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Kec. Berbah, Kab. Sleman</span>
-                <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Kec. Paguyangan, Kab. Brebes</span>
-                <span class="ticker-item"><span class="ticker-city">TEGAL:</span> Jl. Raya Lebaksiu-Slawi, Desa Pendawa, Kec. Lebaksiu, Kab. Tegal (utara pom bensin Pendawa)</span>
-                <span class="ticker-item"><span class="ticker-city">BREBES:</span> Jl. Jend. Ahmad Yani No. 100, Sawah, desa Bulakelor, Kec. Ketanggungan, Kab. Brebes (depan pom bensin Bulakelor)</span>
+                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur</span>
+                <span class="ticker-item"><span class="ticker-city">PURBALINGGA:</span> RT 3/RW 2, Dusun Parung Bongas, Desa Kradenan</span>
             </div>
-            
             <div class="flex">
-                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur (Utara Fakultas Kedokteran Unsoed)</span>
-                <span class="ticker-item"><span class="ticker-city">PURBALINGGA:</span> RT 3/RW 2, Dusun Parung Bongas, Desa Kradenan, Kec. Mrebet</span>
-                <span class="ticker-item"><span class="ticker-city">PEMALANG:</span> Jl. Banjar Dawa-Penggarit, Jebed Selatan, Kec. Taman, Kab. Pemalang (Depan Warung Tengah Sawah Bu Ruslani)</span>
-                <span class="ticker-item"><span class="ticker-city">CILACAP:</span> Jl. Munggur Barat, RT 4/RW 5, Kel. Mertasinga, Kec. Cilacap Utara</span>
-                <span class="ticker-item"><span class="ticker-city">KEDUNGREJA:</span> Jl. Raya Tambaksari, Pasar Blundeng, RT 4/RW 3, Desa Tambaksari, Kec. Kedungreja</span>
-                <span class="ticker-item"><span class="ticker-city">TASIKMALAYA:</span> Jl. Mang Koko, RT 01/RW 03, Sukamajukidul, Kec. Indihiang, Kab. Tasikmalaya</span>
-                <span class="ticker-item"><span class="ticker-city">KEBUMEN (Sabtu & Minggu):</span> Jl. KH. Ahmad Dahlan, RT 14/RW 04, Dukuh Menteyek, Desa Kebulusan, Kec. Pejagoan, Kab. Kebumen (Seberang gapura SMAN 1 Pejagoan)</span>
-                <span class="ticker-item"><span class="ticker-city">SLEMAN:</span> Jl. Raya Piyungan - Prambanan, Dukuh Jlatren, Desa Jogotirto, Kec. Berbah, Kab. Sleman</span>
-                <span class="ticker-item"><span class="ticker-city">BUMIAYU:</span> Jl. Pangeran Diponegoro, Dukuh Glempang, Desa Pagojengan, Kec. Paguyangan, Kab. Brebes</span>
-                <span class="ticker-item"><span class="ticker-city">TEGAL:</span> Jl. Raya Lebaksiu-Slawi, Desa Pendawa, Kec. Lebaksiu, Kab. Tegal (utara pom bensin Pendawa)</span>
-                <span class="ticker-item"><span class="ticker-city">BREBES:</span> Jl. Jend. Ahmad Yani No. 100, Sawah, desa Bulakelor, Kec. Ketanggungan, Kab. Brebes (depan pom bensin Bulakelor)</span>
+                <span class="ticker-item"><span class="ticker-city">PURWOKERTO:</span> Jl. Dr. Gumbreg, Kel. Mersi, Kec. Purwokerto Timur</span>
+                <span class="ticker-item"><span class="ticker-city">PURBALINGGA:</span> RT 3/RW 2, Dusun Parung Bongas, Desa Kradenan</span>
             </div>
         </div>
     </div>
-
   </div>
 
   <script>
-    // Configuration
     const REFRESH_INTERVAL = 90000; 
     const SCROLL_THRESHOLD = 4; 
     const BRANCH_CONFIG = {
       name: "Purwokerto",
       url: "https://script.google.com/macros/s/AKfycbzKpxIOF2VABpGLbDRj9-9Bi2Gwi-urycCnScYhbn26Fy2GQqQGueMyqR6X7F8fkQaO/exec"
     };
-    
     const STATUS = { WAITING: 'waiting', IN_TREATMENT: 'in-treatment', COMPLETED: 'completed' };
 
     function init() {
@@ -388,7 +227,6 @@
         syncThemeUI(); 
     }
 
-    // THEME FUNCTIONS
     function toggleTheme() {
         document.body.classList.toggle('dark');
         document.documentElement.classList.toggle('dark');
@@ -397,24 +235,14 @@
 
     function syncThemeUI() {
         const isDark = document.body.classList.contains('dark');
-        const sun = document.getElementById('iconSun');
-        const moon = document.getElementById('iconMoon');
-        
-        if(isDark) {
-            sun.classList.remove('hidden');
-            moon.classList.add('hidden');
-        } else {
-            sun.classList.add('hidden');
-            moon.classList.remove('hidden');
-        }
+        if(isDark) { document.getElementById('iconSun').classList.remove('hidden'); document.getElementById('iconMoon').classList.add('hidden'); } 
+        else { document.getElementById('iconSun').classList.add('hidden'); document.getElementById('iconMoon').classList.remove('hidden'); }
     }
 
     function updateClockAndDate() {
         const now = new Date();
         const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
         document.getElementById('date').textContent = now.toLocaleDateString('id-ID', optionsDate);
-        
-        // HH:MM:SS format
         document.getElementById('clock').textContent = now.toLocaleTimeString('en-GB', { hour12: false });
     }
 
@@ -423,97 +251,70 @@
             const response = await fetch(BRANCH_CONFIG.url);
             const data = await response.json();
             updateUI(data);
-        } catch (error) {
-            console.error("Fetch Error:", error);
-        }
+        } catch (error) { console.error("Fetch Error:", error); }
     }
 
     function updateUI(patients) {
         const safePatients = patients || [];
-        
-        // Deteksi Istirahat
         const restEntry = safePatients.find(p => p.patientName.toLowerCase().includes('istirahat'));
         const restNotice = document.getElementById('restNotice');
         
         if (restEntry) {
             restNotice.classList.remove('hidden');
-            let fullName = restEntry.patientName.toLowerCase();
-            let timeStr = fullName.replace('istirahat', '').trim();
+            let timeStr = restEntry.patientName.toLowerCase().replace('istirahat', '').trim();
             document.getElementById('restTimeDisplay').textContent = timeStr ? `Mulai Terapi Jam ${timeStr}` : '';
-        } else {
-            restNotice.classList.add('hidden');
-        }
+        } else { restNotice.classList.add('hidden'); }
 
         const activePatients = safePatients.filter(p => !p.patientName.toLowerCase().includes('istirahat'));
         const waitingList = activePatients.filter(p => p.status === STATUS.WAITING);
         const treatingList = activePatients.filter(p => p.status === STATUS.IN_TREATMENT);
         const completedList = activePatients.filter(p => p.status === STATUS.COMPLETED);
 
-        // Render Summary 
         document.getElementById('summaryContainer').innerHTML = `
-            <div>
-                <span class="text-7xl font-black status-waiting">${waitingList.length}</span>
-                <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-1">Menunggu</p>
-            </div>
-            <div>
-                <span class="text-7xl font-black status-in-treatment">${treatingList.length}</span>
-                <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-1">Terapi</p>
-            </div>
-            <div>
-                <span class="text-7xl font-black status-completed">${completedList.length}</span>
-                <p class="text-lg tracking-widest font-bold opacity-60 uppercase mt-1">Selesai</p>
-            </div>
+            <div><span class="text-7xl font-black status-waiting">${waitingList.length}</span><p class="text-lg font-bold opacity-60 uppercase">Menunggu</p></div>
+            <div><span class="text-7xl font-black status-in-treatment">${treatingList.length}</span><p class="text-lg font-bold opacity-60 uppercase">Terapi</p></div>
+            <div><span class="text-7xl font-black status-completed">${completedList.length}</span><p class="text-lg font-bold opacity-60 uppercase">Selesai</p></div>
         `;
 
         renderWaitingList(waitingList);
         renderStandardList('list-treating', treatingList);
-        // Show all completed
         renderStandardList('list-completed', [...completedList].reverse());
     }
 
     function renderWaitingList(list) {
         const container = document.getElementById('list-waiting');
-        
         if (list.length === 0) {
             container.innerHTML = `<div class="p-8 text-center opacity-50 italic font-medium">Antrian Kosong</div>`;
             container.style.animation = 'none';
             return;
         }
 
-        let itemsToRender = list;
-        let shouldScroll = list.length > SCROLL_THRESHOLD;
-
-        if (shouldScroll) {
-            itemsToRender = [...list, ...list];
-        }
-
+        let itemsToRender = list.length > SCROLL_THRESHOLD ? [...list, ...list] : list;
         const originalLength = list.length;
 
         container.innerHTML = itemsToRender.map((p, index) => {
-            const isJunction = shouldScroll && index === originalLength - 1;
-            
-            // Logika tanda strip: Cek, hapus strip untuk tampilan, dan tentukan class warna
+            const isJunction = list.length > SCROLL_THRESHOLD && index === originalLength - 1;
             const hasDash = p.patientName.includes('-');
-            const displayName = p.patientName.replace('-', '').trim(); // Hapus strip di monitor
-            const highlightClass = hasDash ? 'bg-red-600 text-white shadow-lg border-red-700' : '';
-            const textClass = hasDash ? 'text-white' : '';
-            // Khusus nomor antrian di kanan biar tetep kontras kalau background merah
-            const queuePosClass = hasDash ? 'text-yellow-200' : 'status-waiting';
+            const hasAt = p.patientName.includes('@');
+            const displayName = p.patientName.replace('-', '').replace('@', '').trim();
+            
+            const breakSeparator = hasAt ? `<div class="break-separator">↓ SETELAH ISTIRAHAT ↓</div>` : '';
             
             return `
-                <div class="patient-row ${isJunction ? 'border-junction' : ''} ${highlightClass}">
+                ${breakSeparator}
+                <div class="patient-row ${isJunction ? 'border-junction' : ''} ${hasDash ? 'bg-red-600 text-white' : ''}">
                     <div class="flex items-center gap-4">
                         <span class="number-badge">${p.waitingNumber}</span>
-                        <span class="text-2xl font-bold truncate max-w-[220px] ${textClass}">${displayName}</span>
+                        <span class="text-2xl font-bold truncate max-w-[220px]">${displayName}</span>
                     </div>
-                    <span class="text-xl font-bold ${queuePosClass}">#${p.queuePosition}</span>
+                    <span class="text-xl font-bold ${hasDash ? 'text-yellow-200' : 'status-waiting'}">#${p.queuePosition}</span>
                 </div>
             `;
         }).join('');
 
-        if (shouldScroll) {
-            const duration = originalLength * 5; 
-            container.style.animation = `scroll-up ${duration}s linear infinite`;
+        if (list.length > SCROLL_THRESHOLD) {
+            // KECEPATAN: Dipercepat menjadi 3.5 detik per baris
+            container.style.animation = `scroll-up ${originalLength * 2}s linear infinite`;
         } else {
             container.style.animation = 'none';
             container.style.transform = 'translateY(0)';
@@ -522,24 +323,23 @@
 
     function renderStandardList(elementId, list) {
         const container = document.getElementById(elementId);
-        
         if (list.length === 0) {
             container.innerHTML = `<div class="p-8 text-center opacity-50 italic font-medium">Kosong</div>`;
             return;
         }
 
         container.innerHTML = list.map(p => {
-            // Logika tanda strip sama seperti di atas
             const hasDash = p.patientName.includes('-');
-            const displayName = p.patientName.replace('-', '').trim(); // Hapus strip di monitor
-            const highlightClass = hasDash ? 'bg-red-600 text-white shadow-lg border-red-700' : '';
-            const textClass = hasDash ? 'text-white' : '';
+            const hasAt = p.patientName.includes('@');
+            const displayName = p.patientName.replace('-', '').replace('@', '').trim();
+            const breakSeparator = hasAt ? `<div class="break-separator">↓ SETELAH ISTIRAHAT ↓</div>` : '';
 
             return `
-                <div class="patient-row ${highlightClass}">
+                ${breakSeparator}
+                <div class="patient-row ${hasDash ? 'bg-red-600 text-white' : ''}">
                     <div class="flex items-center gap-4">
                         <span class="number-badge">${p.waitingNumber}</span>
-                        <span class="text-2xl font-bold truncate max-w-[280px] ${textClass}">${displayName}</span>
+                        <span class="text-2xl font-bold truncate max-w-[280px]">${displayName}</span>
                     </div>
                 </div>
             `;
