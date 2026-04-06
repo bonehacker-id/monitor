@@ -108,14 +108,13 @@
       justify-content: space-between;
     }
 
-    /* Styling baris pemisah agar setinggi patient-row */
     .break-separator {
       background-color: #450a0a; /* Maroon gelap (red-950) */
       color: #ffffff;
       text-align: center;
-      padding: 1.25rem 1.5rem; /* Menyamakan dengan patient-row */
+      padding: 1.25rem 1.5rem;
       font-weight: 900;
-      font-size: 1.5rem; /* text-2xl setara nama */
+      font-size: 1.5rem; 
       letter-spacing: 0.15em;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
@@ -313,8 +312,8 @@
         }).join('');
 
         if (list.length > SCROLL_THRESHOLD) {
-            // KECEPATAN: Dipercepat menjadi 3.5 detik per baris
-            container.style.animation = `scroll-up ${originalLength * 2}s linear infinite`;
+            // KECEPATAN: Dipercepat menjadi 1.5 detik per baris
+            container.style.animation = `scroll-up ${originalLength * 1.5}s linear infinite`;
         } else {
             container.style.animation = 'none';
             container.style.transform = 'translateY(0)';
